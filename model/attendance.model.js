@@ -1,19 +1,13 @@
 const mongoose = require("mongoose");
 
 const attendanceSchema = new mongoose.Schema({
-  date: {
-    type: Date,
-    required: true,
-  },
-  time: {
-    type: Date,
-  },
   weeklyRecords: {
-    type: [Map],
+    type: [{}],
     required: true,
   },
+
   monthlyRecords: {
-    type: [Map],
+    type: [[{}]],
     required: true,
   },
 });

@@ -3,7 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-const UsersRouter = require("./routes/users/users.route");
+const UserRouter = require("./routes/users/usersbio.route");
+const attendanceRoute = require("./routes/attendance record/attendance.route");
 
 const PORT = process.env.PORT || 8000;
 
@@ -26,7 +27,9 @@ app.use(
   })
 );
 
+/////// Request handlers ////
 app.use("/addUser", UsersRouter);
+app.use("/addAttendanceRecord", attendanceRoute);
 
 /// Ignite server ////
 app.listen(PORT, () => {

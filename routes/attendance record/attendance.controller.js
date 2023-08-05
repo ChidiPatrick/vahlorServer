@@ -1,9 +1,24 @@
 const attendanceCollection = require("../../model/attendance.model");
 
-const createAttendanceDocument = async (req, res) => {
-  await attendanceCollection.create(req.body).then(() => {
-    return res.status(200);
-  });
-};
+async function createAttendanceCollection(req, res) {
+  await attendanceCollection.createCollection().then(() => res.status(200));
+}
 
-module.exports = { createAttendanceDocument };
+//// Add attendance record ////
+async function addAttendanceRecord(req, res) {
+  try {
+    const attendanceDoc = await attendanceCollection.findOneAndUpdate(
+      { weeklyRecords },
+      req.body,
+      {
+        new: true,
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+
+  res.status(200).json(attendanceDoc);
+}
+
+module.exports = { createAttendanceCollection, addAttendanceRecord };
