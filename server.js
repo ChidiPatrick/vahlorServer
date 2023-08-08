@@ -21,6 +21,9 @@ mongoose.connection.on("error", () => {
   console.log("Please check your internet connection");
 });
 
+// const students = mongoose.connection.collection("studentCredentials");
+// console.log(students);
+
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -28,7 +31,7 @@ app.use(
 );
 
 /////// Request handlers ////
-app.use("/addUser", UsersRouter);
+app.use("/addUser", UserRouter);
 app.use("/addAttendanceRecord", attendanceRoute);
 
 /// Ignite server ////
