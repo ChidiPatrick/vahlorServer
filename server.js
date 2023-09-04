@@ -1,15 +1,21 @@
 const express = require("express");
 
 const cors = require("cors");
+require("dotenv").config();
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const Passport = require("passport");
+const connectEnsureLogin = require("connect-ensure-login");
 
 const UserRouter = require("./routes/users/usersbio.route");
 const attendanceRoute = require("./routes/attendance record/attendance.route");
+const SigninRoute = require("./routes/user auth/signin.route");
+const SignupRoute = require("./routes/user auth/signup.route");
 
 const PORT = process.env.PORT || 8000;
 
-const MONGODB_URL =
-  "mongodb+srv://okaforpatrick302:Ghy9jZXXxRfMoZuY@cluster0.ttiszbq.mongodb.net/?retryWrites=true&w=majority";
+const MONGODB_URL = `${process.env.MONGODB_URL}`;
 
 const app = express();
 
@@ -30,13 +36,19 @@ app.use(
   })
 );
 
+app.use(Passport.initialize());
 /////// Request handlers ////
 app.use("/addUser", UserRouter);
 app.use("/addAttendanceRecord", attendanceRoute);
+app.use("/signInUser", SigninRoute);
+app.use("/signupUser", SignupRoute);
 
 /// Ignite server ////
 app.listen(PORT, () => {
-  mongoose.connect(MONGODB_URL);
+  mongoose.connect(MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   console.log(`Listening to port: ${PORT}`);
 });
 

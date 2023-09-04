@@ -1,14 +1,20 @@
 const mongoose = require("mongoose");
+const passportLocalMongoose = require("passport-local-mongoose");
+const { validatePassword } = require("../routes/user auth/signin.controller");
 
 const userBioSchema = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
     required: true,
   },
-  // lastName: {
-  //   type: String,
-  //   required: true,
-  // },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
   address: {
     type: String,
     required: true,
@@ -17,11 +23,17 @@ const userBioSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   tel: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
+
+userBioSchema.plugin(passportLocalMongoose);
 
 const Users = mongoose.model("User", userBioSchema);
 
