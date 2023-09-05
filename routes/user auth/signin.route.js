@@ -4,8 +4,8 @@ const passport = require("passport");
 const EmailPasswordStrategy = require("passport-local");
 const bodyParser = require("body-parser");
 const session = require("express-session");
-const Passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
+const LocalStrategy = require("passport-local");
 
 const signinModel = require("../../model/signin.model");
 const { Users } = require("../../model/userbio.model");
@@ -29,6 +29,10 @@ SigninRoute.use(
 SigninRoute.use(express.json());
 SigninRoute.use(passport.initialize());
 SigninRoute.use(passport.session());
+
+passport.use(Users.createStrategy());
+passport.serializeUser(Users.serializeUser());
+passport.deserializeUser(Users.deserializeUser());
 
 SigninRoute.post("/", signinUser);
 
