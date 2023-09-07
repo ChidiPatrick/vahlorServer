@@ -33,8 +33,15 @@ const userBioSchema = new mongoose.Schema({
   },
 });
 
-userBioSchema.plugin(passportLocalMongoose);
+userBioSchema.plugin(passportLocalMongoose, {
+  usernameField: "email",
+});
 
 const Users = mongoose.model("User", userBioSchema);
+
+// function validatePassword(password, email) {
+//   const user = Users.findOne({ email, password });
+//   console.log(user);
+// }
 
 module.exports = { Users };

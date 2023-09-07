@@ -8,7 +8,7 @@ const signinUser = (req, res) => {
     console.log(req.body);
     console.log("User signed in...");
 
-    res.status(200).redirect("http://localhost:3000/secretPage");
+    // res.status(200).redirect("http://localhost:3000/secretPage");
   } catch (err) {
     console.log(err);
   }

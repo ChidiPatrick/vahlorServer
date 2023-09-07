@@ -34,6 +34,14 @@ passport.use(Users.createStrategy());
 passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());
 
-SigninRoute.post("/", signinUser);
+SigninRoute.post(
+  "/",
+  passport.authenticate("local", {
+    successRedirect: "http://localhost:3000/secretPage",
+    failureRedirect: "http://localhost:3000/failurePage",
+    // failureFlash: true,
+  })
+  // signinUser
+);
 
 module.exports = SigninRoute;
