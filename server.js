@@ -12,6 +12,7 @@ const UserRouter = require("./routes/users/usersbio.route");
 const attendanceRoute = require("./routes/attendance record/attendance.route");
 const SigninRoute = require("./routes/user auth/signin.route");
 const SignupRoute = require("./routes/user auth/signup.route");
+const signInWithGoogle = require("./routes/user auth/signin.with.google");
 
 const PORT = process.env.PORT || 8000;
 
@@ -42,6 +43,9 @@ app.use("/addUser", UserRouter);
 app.use("/addAttendanceRecord", attendanceRoute);
 app.use("/signInUser", SigninRoute);
 app.use("/signupUser", SignupRoute);
+app.use("/auth/google", (req, res) => {
+  console.log(req);
+});
 
 /// Ignite server ////
 app.listen(PORT, () => {

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
-const { validatePassword } = require("../routes/user auth/signin.controller");
 
 const userBioSchema = new mongoose.Schema({
   firstName: {
@@ -38,10 +37,5 @@ userBioSchema.plugin(passportLocalMongoose, {
 });
 
 const Users = mongoose.model("User", userBioSchema);
-
-// function validatePassword(password, email) {
-//   const user = Users.findOne({ email, password });
-//   console.log(user);
-// }
 
 module.exports = { Users };

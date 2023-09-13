@@ -4,6 +4,8 @@ const passport = require("passport");
 const EmailPasswordStrategy = require("passport-local");
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
 const connectEnsureLogin = require("connect-ensure-login");
 const LocalStrategy = require("passport-local");
 
@@ -34,14 +36,6 @@ passport.use(Users.createStrategy());
 passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());
 
-SigninRoute.post(
-  "/",
-  passport.authenticate("local", {
-    successRedirect: "http://localhost:3000/secretPage",
-    failureRedirect: "http://localhost:3000/failurePage",
-    // failureFlash: true,
-  })
-  // signinUser
-);
+// Sign in with google
 
 module.exports = SigninRoute;
