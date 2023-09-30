@@ -1,12 +1,17 @@
 const express = require("express");
-
+const https = require("https");
 const cors = require("cors");
+const fs = require("fs");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const session = require("express-session");
-const Passport = require("passport");
+const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
+const path = require("path");
+// const passport = require("passport");
+// const session = require("express-session");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const UserRouter = require("./routes/users/usersbio.route");
 const attendanceRoute = require("./routes/attendance record/attendance.route");
@@ -28,32 +33,36 @@ mongoose.connection.on("error", () => {
   console.log("Please check your internet connection");
 });
 
-// const students = mongoose.connection.collection("studentCredentials");
-// console.log(students);
-
 app.use(
   cors({
     origin: "http://localhost:3000",
   })
 );
 
-app.use(Passport.initialize());
-/////// Request handlers ////
+app.use("/", express.static(path.join(__dirname, "public/build")));
+//////////////////////////////////////////////////////
+
 app.use("/addUser", UserRouter);
 app.use("/addAttendanceRecord", attendanceRoute);
 app.use("/signInUser", SigninRoute);
 app.use("/signupUser", SignupRoute);
-app.use("/auth/google", (req, res) => {
-  console.log(req);
-});
+app.use("/auth/google", signInWithGoogle);
 
 /// Ignite server ////
-app.listen(PORT, () => {
-  mongoose.connect(MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+https
+  .createServer(
+    {
+      cert: fs.readFileSync("server.cert"),
+      key: fs.readFileSync("server.key"),
+    },
+    app
+  )
+  .listen(PORT, () => {
+    mongoose.connect(MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`Listening to port: ${PORT}`);
   });
-  console.log(`Listening to port: ${PORT}`);
-});
 
 //Ghy9jZXXxRfMoZuY

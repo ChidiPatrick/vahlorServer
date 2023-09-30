@@ -3,8 +3,11 @@ const express = require("express");
 const { registerNewUser } = require("./signup.controller");
 const passport = require("passport");
 const session = require("express-session");
+const path = require("path");
 
 const SignupRoute = express.Router();
+
+// SignupRoute.use());
 
 SignupRoute.use(
   session({
