@@ -22,11 +22,17 @@ const AUTH_OPTIONS = {
 };
 
 const verifyCallback = (accessToke, refreshToken, profile, done) => {
-  console.log(profile);
+  console.log({ name: profile.displayName, email: profile.emails[0].value });
   done(null, profile);
 };
 
-passport.use(new GoogleStrategy(AUTH_OPTIONS, verifyCallback));
+const checkLoggIn = (req, res, next) => {
+  if (req.isAuthenticated) {
+    res.send("You're highly welcome");
+  } else {
+    res.status(401).send("User not logged in");
+  }
+};
 
 signInWithGoogle.use(
   cookieSession({
@@ -36,6 +42,10 @@ signInWithGoogle.use(
   })
 );
 
+signInWithGoogle.use(passport.initialize());
+
+passport.use(new GoogleStrategy(AUTH_OPTIONS, verifyCallback));
+
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -44,8 +54,6 @@ passport.deserializeUser((userObject, done) => {
   done(null, userObject);
 });
 
-signInWithGoogle.use(passport.initialize());
-signInWithGoogle.use(passport.session());
 signInWithGoogle.use(
   "/",
   passport.authenticate("google", {
@@ -68,7 +76,7 @@ signInWithGoogle.get(
   }
 );
 
-signInWithGoogle.get("secretPage", (req, res) => {
+signInWithGoogle.get("secretPage", checkLoggIn, (req, res) => {
   console.log("Successfully logged in");
 });
 
